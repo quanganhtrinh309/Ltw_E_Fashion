@@ -2,24 +2,12 @@ package dao;
 
 import model.User;
 import java.sql.*;
-
+import util.DatabaseConnection;
 public class UserDAO {
-    private static final String URL = "jdbc:mysql://localhost:3306/e_fashion";
-    private static final String USER = "root";
-    private static final String PASSWORD = "chinh2k5";
-
-    private Connection getConnection() throws SQLException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            return DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (ClassNotFoundException e) {
-            throw new SQLException(e);
-        }
-    }
-
+    
     public User findByUsername(String username) {
         String sql = "SELECT * FROM user WHERE username = ?";
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
@@ -38,7 +26,7 @@ public class UserDAO {
 
     public boolean save(User user) {
         String sql = "INSERT INTO user (id, name, birthdate, phonenumber, gender, username, password_hash, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getId());
             stmt.setString(2, user.getName());
