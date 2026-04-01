@@ -6,10 +6,9 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.UUID;
 
 public class UserService {
-    private UserDAO userDAO = new UserDAO();
 
-    public User login(String username, String plainPassword) {
-        User user = userDAO.findByUsername(username);
+    public static User login(String username, String plainPassword) {
+        User user = UserDAO.findByUsername(username);
         if (user != null && BCrypt.checkpw(plainPassword, user.getPasswordHash())) {
             if (!user.isActive()) {
                 throw new RuntimeException("Tài khoản đã bị khóa!");
@@ -20,13 +19,13 @@ public class UserService {
     }
 
     public boolean register(User newUser, String plainPassword) {
-        if (userDAO.findByUsername(newUser.getUsername()) != null) {
+        if (UserDAO.findByUsername(newUser.getUsername()) != null) {
             return false;
         }
         newUser.setId(UUID.randomUUID().toString());
         String hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
         newUser.setPasswordHash(hashedPassword);
         
-        return userDAO.save(newUser);
+        return UserDAO.addUser(newUser);
     }
 }

@@ -5,7 +5,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-
+DBConnection.java
 # Tomcat/Server specific
 /target/
 *.class
