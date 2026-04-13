@@ -12,6 +12,8 @@ public class Product {
     private String description;
     private String display_image; 
     private int display_price;
+    private Double display_max_price;
+    
     
     private String brandName;
     private String category;
@@ -61,4 +63,11 @@ public class Product {
     public void setProductVariants(List<ProductVariant> productVariants) { this.productVariants = productVariants; }
     public void setBrandName(String brandName) { this.brandName = brandName; }
     public void setCategory(String category) { this.category = category; }
+    public void setDisplay_max_price(Double display_max_price) {
+        this.display_max_price = display_max_price;
+    }
+    
+    public Double getDisplay_max_price() {
+        return display_max_price;
+    }
 }

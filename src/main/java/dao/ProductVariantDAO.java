@@ -124,4 +124,20 @@ public class ProductVariantDAO {
 
         return false;
     }
+    
+    public boolean updateVariant(ProductVariant variant) {
+        String sql = "UPDATE product_variants SET color = ?, size = ?, price = ?, stock = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, variant.getColor());
+            ps.setString(2, variant.getSize());
+            ps.setInt(3, variant.getPrice());
+            ps.setInt(4, variant.getStock());
+            ps.setString(5, variant.getId());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

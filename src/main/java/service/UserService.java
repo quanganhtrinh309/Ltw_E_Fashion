@@ -58,4 +58,8 @@ public class UserService {
     public boolean updateUser(User user) {
         return userDAO.updateUser(user);
     }
+    
+    public boolean updateUserStatus(String userId, boolean status) {
+        return userDAO.updateUserStatus(userId, status);
+    }
 }

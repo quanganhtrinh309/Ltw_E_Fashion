@@ -7,18 +7,70 @@
     <title>Nhập Sản Phẩm Mới - Admin</title>
     <style>
         body { font-family: Arial; margin: 0; background: #f4f6f9; }
-        .top-header { background: #fff; border-bottom: 1px solid #ddd; padding: 10px 30px; display: flex; justify-content: space-between; }
-        .header-left { display: flex; gap: 20px; align-items: center; }
-        .brand { font-size: 20px; font-weight: bold; text-decoration: none; color: #333; }
-        .nav-links a { padding: 10px; text-decoration: none; color: #555; font-weight: bold; }
-        .nav-links a.active { color: #e64a19; }
 
-        .container { padding: 30px; max-width: 800px; margin: auto; }
-        .form-card { background: white; padding: 30px; border-radius: 5px; }
-        .form-group { margin-bottom: 20px; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        .btn-submit { background: #e64a19; color: white; padding: 12px; border: none; width: 100%; }
-        .btn-back { display: block; margin-top: 10px; text-align: center; }
+        .top-header {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .container {
+            padding: 30px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .form-card {
+            background: white;
+            padding: 30px;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-submit {
+            background: #e64a19;
+            color: white;
+            padding: 12px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -40,57 +92,35 @@
             <!-- ID -->
             <div class="form-group">
                 <label>Mã sản phẩm</label>
-                <input type="text" name="productId" class="form-control" required>
+                <input type="text" name="productId" class="form-control" value="${productId}" required>
             </div>
 
             <!-- NAME -->
             <div class="form-group">
                 <label>Tên sản phẩm</label>
-                <input type="text" name="productName" class="form-control" required>
+                <input type="text" name="productName" class="form-control" value="${productName}" required>
             </div>
 
             <!-- BRAND -->
             <div class="form-group">
                 <label>Thương hiệu</label>
-
-                <select name="brandSelect" class="form-control">
-                    <option value="">-- Chọn thương hiệu --</option>
-                    <c:forEach var="b" items="${brands}">
-                        <option value="${b.id}">${b.name}</option>
-                    </c:forEach>
-                </select>
-
-                <input type="text" name="brandInput" class="form-control" 
-                       placeholder="Hoặc nhập brand mới..." style="margin-top:8px;">
+                <input type="text" name="brandInput" class="form-control" value="${brandInput}">
             </div>
 
             <!-- SUPPLIER -->
             <div class="form-group">
                 <label>Nhà cung cấp</label>
-
-                <select name="supplierSelect" class="form-control">
-                    <option value="">-- Chọn supplier --</option>
-                    <c:forEach var="s" items="${suppliers}">
-                        <option value="${s.supplierId}">${s.supplierName}</option>
-                    </c:forEach>
-                </select>
-
-                <input type="text" name="supplierInput" class="form-control" 
-                       placeholder="Hoặc nhập supplier mới..." style="margin-top:8px;">
+                <input type="text" name="supplierInput" class="form-control" value="${supplierInput}">
             </div>
-
-            <!-- CATEGORY -->
 
             <!-- CATEGORY -->
             <div class="form-group">
                 <label>Danh mục</label>
 
-                <div style="display: flex; gap: 10px;">
+                <div class="row">
 
-                    <!-- CHA -->
-                    <select name="parentId" class="form-control"
-                            onchange="window.location.href='${pageContext.request.contextPath}/admin/products/add?parentId=' + this.value">
-                        <option value="">-- Cha --</option>
+                    <select name="parentId" class="form-control" onchange="this.form.submit()">
+                        <option value="">-- chọn --</option>
                         <c:forEach var="c" items="${parentCategories}">
                             <option value="${c.id}" ${c.id == selectedParent ? 'selected' : ''}>
                                 ${c.name}
@@ -98,11 +128,8 @@
                         </c:forEach>
                     </select>
 
-                    <!-- CON -->
-                    <select name="childId" class="form-control"
-                            onchange="window.location.href='${pageContext.request.contextPath}/admin/products/add?parentId=${selectedParent}&childId=' + this.value">
-
-                        <option value="">-- Con --</option>
+                    <select name="childId" class="form-control" onchange="this.form.submit()">
+                        <option value="">-- chọn --</option>
                         <c:forEach var="c" items="${childCategories}">
                             <option value="${c.id}" ${c.id == selectedChild ? 'selected' : ''}>
                                 ${c.name}
@@ -110,11 +137,10 @@
                         </c:forEach>
                     </select>
 
-                    <!-- CHÁU -->
-                    <select name="categoryId" class="form-control" required>
-                        <option value="">-- Cháu --</option>
+                    <select name="categoryId" class="form-control"">
+                        <option value="">-- chọn --</option>
                         <c:forEach var="c" items="${grandChildCategories}">
-                            <option value="${c.id}">
+                            <option value="${c.id}" ${c.id == selectedCategory ? 'selected' : ''}>
                                 ${c.name}
                             </option>
                         </c:forEach>
@@ -126,13 +152,24 @@
             <!-- DESCRIPTION -->
             <div class="form-group">
                 <label>Mô tả</label>
-                <textarea name="description" class="form-control"></textarea>
+                <textarea name="description" class="form-control">${description}</textarea>
             </div>
 
-            <button type="submit" class="btn-submit">LƯU</button>
+            <!-- SUBMIT -->
+            <button type="submit" name="action" value="save" class="btn-submit">
+                LƯU
+            </button>
+
         </form>
 
-        <a href="${pageContext.request.contextPath}/admin/products" class="btn-back">← Quay lại</a>
+        <c:if test="${not empty error}">
+            <p style="color:red">${error}</p>
+        </c:if>
+
+        <a href="${pageContext.request.contextPath}/admin/products" class="btn-back">
+            ← Quay lại
+        </a>
+
     </div>
 </div>
 

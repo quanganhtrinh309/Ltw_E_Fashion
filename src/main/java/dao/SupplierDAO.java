@@ -31,7 +31,7 @@ public class SupplierDAO {
     }
     
     public String addNewSupplier(String supplierName) {
-        String sql = "INSERT INTO supplier (id, name) VALUES (?, ?)";
+        String sql = "INSERT INTO supplier (id, supplier_name) VALUES (?, ?)";
 
         String uuid = java.util.UUID.randomUUID().toString();
 

@@ -19,7 +19,7 @@
         <a href="${pageContext.request.contextPath}/admin/dashboard">🏠 Tổng quan</a>
         <a href="${pageContext.request.contextPath}/admin/users">👥 Quản lý Người dùng</a>
         <a href="${pageContext.request.contextPath}/admin/products">📦 Quản lý Sản phẩm</a>
-        <a href="#orders">🛒 Quản lý Đơn hàng</a>
+        <a href="${pageContext.request.contextPath}/admin/orders">🛒 Quản lý Đơn hàng</a>
     </div>
 
     <div class="main-content">

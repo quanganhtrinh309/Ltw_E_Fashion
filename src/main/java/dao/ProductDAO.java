@@ -154,4 +154,49 @@ public class ProductDAO {
 
         return false;
     }
+    
+    public int getTotalActiveProducts() {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM product WHERE is_active = 1";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) count = rs.getInt(1);
+        } catch (SQLException e) { e.printStackTrace(); }
+        return count;
+    }
+    
+    public Map<String, Integer> getProductsByCategory() {
+        Map<String, Integer> map = new HashMap<>();
+        String sql = "SELECT c.name, COUNT(p.id) as count " +
+                     "FROM product p " +
+                     "JOIN category c ON p.category_id = c.id " +
+                     "WHERE p.is_active = 1 " +
+                     "GROUP BY c.name";
+                     
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+             
+            while (rs.next()) {
+                map.put(rs.getString("name"), rs.getInt("count"));
+            }
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+        }
+        return map;
+    }
+    
+    public boolean restoreProduct(String id) {
+        String sql = "UPDATE product SET is_active = 1 WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

@@ -74,4 +74,54 @@ public class CategoryDAO {
         return fullName.toString();
     }
     
+    public List<Category> getParentCategories() {
+        List<Category> list = new ArrayList<>();
+        String sql = "SELECT * FROM category WHERE parent_id IS NULL";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Category c = new Category(
+                    rs.getInt("id"),
+                    null, // cha không có parent
+                    rs.getString("name")
+                );
+                list.add(c);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    
+    public List<Category> getChildCategories(int parentId) {
+        List<Category> list = new ArrayList<>();
+        String sql = "SELECT * FROM category WHERE parent_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, parentId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Category c = new Category(
+                    rs.getInt("id"),
+                    rs.getInt("parent_id"),
+                    rs.getString("name")
+                );
+                list.add(c);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    
 }
